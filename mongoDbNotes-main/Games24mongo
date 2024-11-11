@@ -1,0 +1,60 @@
+Sure! Here is the complete set of commands including the creation of the database, adding the games collection, and all necessary queries:
+________________________________________
+Step 1: Create the Database GameDB
+Code:
+use GameDB
+•	Explanation: This command creates and switches to the GameDB database.
+________________________________________
+Step 2: Create the games Collection and Add 5 Games
+1.	Insert sample game data into the games collection:
+Code:
+db.games.insertMany([
+    { name: "Game A", gametype: "Action", rating: 85 },
+    { name: "Game B", gametype: "Adventure", rating: 92 },
+    { name: "Game C", gametype: "Puzzle", rating: 75 },
+    { name: "Game D", gametype: "Strategy", rating: 88 },
+    { name: "Game E", gametype: "RPG", rating: 95 }
+])
+o	Explanation: This command adds five games to the games collection with the specified properties: name, gametype, and rating.
+________________________________________
+Step 3: Queries to Retrieve Data
+1.	Return all the games:
+Code:
+db.games.find().pretty()
+o	Explanation: This command retrieves and formats all game documents from the games collection.
+2.	Return the 3 highest-rated games:
+Code:
+db.games.find().sort({ rating: -1 }).limit(3)
+o	Explanation: Sorts the games in descending order by rating and limits the output to the top 3 games.
+________________________________________
+Step 4: Update Games with Achievements
+1.	Update two favorite games to add achievements:
+Code:
+db.games.updateOne(
+    { name: "Game B" },
+    { $set: { achievements: ["Game Master", "Speed Demon"] } }
+)
+
+db.games.updateOne(
+    { name: "Game E" },
+    { $set: { achievements: ["Game Master", "Speed Demon"] } }
+)
+o	Explanation: This command adds the achievements array with "Game Master" and "Speed Demon" to two selected games, Game B and Game E.
+________________________________________
+Step 5: Queries to Filter by Achievements
+1.	Return all games with both "Game Master" and "Speed Demon" achievements:
+code:
+db.games.find({ achievements: { $all: ["Game Master", "Speed Demon"] } }).pretty()
+o	Explanation: The $all operator ensures the query only returns games that contain both specified achievements.
+2.	Return only games that have achievements:
+Code:
+db.games.find({ achievements: { $exists: true } }).pretty()
+o	Explanation: The $exists operator checks if the achievements field is present in the game documents.
+________________________________________
+Summary
+1.	Database: Created GameDB database.
+2.	Collection: Created games collection with sample game data.
+3.	Queries: Retrieved all games, filtered top-rated games, and filtered based on achievements.
+4.	Updates: Added achievements to specific games and checked for games with achievements.
+You can run these commands in a MongoDB shell to create and manage the games collection effectively.
+
