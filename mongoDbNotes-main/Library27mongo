@@ -1,0 +1,48 @@
+Step 1: Create the Database and Collection
+1.	Switch to the library database:
+Code:
+use library
+2.	Create and insert documents into the books collection:
+Code:
+db.books.insertMany([
+    { title: "Book One", pages: 150 },
+    { title: "Book Two", pages: 300 },
+    { title: "Book Three", pages: 220 },
+    { title: "Book Four", pages: 400 },
+    { title: "Book Five", pages: 100 }
+    // Add more books as needed
+])
+________________________________________
+Step 2: Use MapReduce to Categorize Books as "Small" or "Big"
+1.	Map function: This function classifies books as either "Small" or "Big" based on the number of pages and emits the category with a value of 1.
+Code:
+var mapFunction = function() {
+    var category = this.pages <= 250 ? "Small" : "Big";
+    emit(category, 1);
+};
+2.	Reduce function: This function sums up the values for each category.
+Code:
+var reduceFunction = function(key, values) {
+    return Array.sum(values);
+};
+3.	Run MapReduce:
+Code:
+db.books.mapReduce(
+    mapFunction,
+    reduceFunction,
+    { out: "book_size_count" }
+)
+4.	Retrieve the results:
+Code:
+db.book_size_count.find().pretty()
+o	Explanation: This MapReduce operation counts how many books are classified as "Small" (250 pages or less) and "Big" (more than 250 pages), and stores the results in the book_size_count collection.
+________________________________________
+Summary
+1.	Database: Created library database and books collection.
+2.	MapReduce Functionality:
+o	Map Function: Categorized books based on page count.
+o	Reduce Function: Used Array.sum to count books in each category.
+3.	Results: The counts of "Small" and "Big" books are stored in the book_size_count collection and can be easily queried.
+This approach leverages MongoDB’s MapReduce feature to perform classification and aggregation based on the number of pages.
+
+
