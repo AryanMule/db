@@ -1,0 +1,108 @@
+### Problem Statement: Create Collection `Social_Media` and Perform Queries
+
+We will create the `Social_Media` collection in MongoDB with the fields `User_Id`, `User_Name`, `No_of_Posts`, `No_of_Friends`, `Friends_List`, and `Interests`. After inserting sample data, we will execute the queries to retrieve specific information as described in the problem.
+
+---
+
+### Step 1: Create Collection `Social_Media` and Insert Documents
+
+First, create the collection and insert 20 sample documents. Here's how you can do it:
+
+```javascript
+use social_media_db  // Switch to the desired database
+
+db.Social_Media.insertMany([
+    { User_Id: 1, User_Name: "Alice", No_of_Posts: 150, No_of_Friends: 120, Friends_List: ["Bob", "Charlie", "David"], Interests: ["Music", "Traveling"] },
+    { User_Id: 2, User_Name: "Bob", No_of_Posts: 80, No_of_Friends: 90, Friends_List: ["Alice", "Charlie"], Interests: ["Gaming", "Reading"] },
+    { User_Id: 3, User_Name: "Charlie", No_of_Posts: 200, No_of_Friends: 150, Friends_List: ["Alice", "Bob", "David"], Interests: ["Cooking", "Gaming"] },
+    { User_Id: 4, User_Name: "David", No_of_Posts: 50, No_of_Friends: 30, Friends_List: ["Alice", "Charlie"], Interests: ["Traveling", "Sports"] },
+    { User_Id: 5, User_Name: "Eve", No_of_Posts: 120, No_of_Friends: 100, Friends_List: ["Frank", "Grace"], Interests: ["Movies", "Photography"] },
+    { User_Id: 6, User_Name: "Frank", No_of_Posts: 30, No_of_Friends: 50, Friends_List: ["Eve", "Grace"], Interests: ["Reading", "Traveling"] },
+    { User_Id: 7, User_Name: "Grace", No_of_Posts: 110, No_of_Friends: 110, Friends_List: ["Eve", "Frank"], Interests: ["Music", "Cooking"] },
+    { User_Id: 8, User_Name: "Hannah", No_of_Posts: 250, No_of_Friends: 200, Friends_List: ["Ivy", "Jack"], Interests: ["Photography", "Reading"] },
+    { User_Id: 9, User_Name: "Ivy", No_of_Posts: 70, No_of_Friends: 80, Friends_List: ["Hannah", "Jack"], Interests: ["Music", "Sports"] },
+    { User_Id: 10, User_Name: "Jack", No_of_Posts: 180, No_of_Friends: 150, Friends_List: ["Hannah", "Ivy"], Interests: ["Traveling", "Gaming"] },
+    { User_Id: 11, User_Name: "Ken", No_of_Posts: 160, No_of_Friends: 90, Friends_List: ["Liam", "Mia"], Interests: ["Music", "Technology"] },
+    { User_Id: 12, User_Name: "Liam", No_of_Posts: 100, No_of_Friends: 70, Friends_List: ["Ken", "Mia"], Interests: ["Gaming", "Sports"] },
+    { User_Id: 13, User_Name: "Mia", No_of_Posts: 200, No_of_Friends: 180, Friends_List: ["Ken", "Liam"], Interests: ["Movies", "Reading"] },
+    { User_Id: 14, User_Name: "Nina", No_of_Posts: 50, No_of_Friends: 40, Friends_List: ["Oscar", "Paul"], Interests: ["Cooking", "Technology"] },
+    { User_Id: 15, User_Name: "Oscar", No_of_Posts: 30, No_of_Friends: 20, Friends_List: ["Nina", "Paul"], Interests: ["Photography", "Music"] },
+    { User_Id: 16, User_Name: "Paul", No_of_Posts: 40, No_of_Friends: 50, Friends_List: ["Nina", "Oscar"], Interests: ["Reading", "Gaming"] },
+    { User_Id: 17, User_Name: "Quincy", No_of_Posts: 75, No_of_Friends: 60, Friends_List: ["Rita", "Steve"], Interests: ["Traveling", "Sports"] },
+    { User_Id: 18, User_Name: "Rita", No_of_Posts: 90, No_of_Friends: 110, Friends_List: ["Quincy", "Steve"], Interests: ["Music", "Movies"] },
+    { User_Id: 19, User_Name: "Steve", No_of_Posts: 65, No_of_Friends: 85, Friends_List: ["Quincy", "Rita"], Interests: ["Cooking", "Gaming"] },
+    { User_Id: 20, User_Name: "Tom", No_of_Posts: 130, No_of_Friends: 160, Friends_List: ["Uma", "Victor"], Interests: ["Photography", "Technology"] }
+]);
+```
+
+---
+
+### Step 2: Queries
+
+#### 1. List All Users from the `Social_Media` Collection in Formatted Manner
+We can use the `find()` method with the `pretty()` function to format the output in a readable way.
+
+```javascript
+db.Social_Media.find().pretty();
+```
+
+- **Explanation**: This will display all the documents in the `Social_Media` collection in a formatted manner, making it easier to read.
+
+#### 2. Find All Users Having Number of Posts Greater Than 100
+We will use the `$gt` (greater than) operator to filter users who have posted more than 100 posts.
+
+```javascript
+db.Social_Media.find({ No_of_Posts: { $gt: 100 } }).pretty();
+```
+
+- **Explanation**: This query will find all users where the `No_of_Posts` is greater than 100.
+
+#### 3. List the User Names and Their Respective `Friends_List`
+We want to display the `User_Name` and their `Friends_List` for each user.
+
+```javascript
+db.Social_Media.find({}, { User_Name: 1, Friends_List: 1, _id: 0 }).pretty();
+```
+
+- **Explanation**: This query retrieves only the `User_Name` and `Friends_List` fields from all documents in the `Social_Media` collection. `_id: 0` excludes the default `_id` field from the output.
+
+#### 4. Display the User IDs and `Friends_List` of Users Who Have More Than 5 Friends
+We will use the `$gt` operator to filter users who have more than 5 friends.
+
+```javascript
+db.Social_Media.find({ No_of_Friends: { $gt: 5 } }, { User_Id: 1, Friends_List: 1, _id: 0 }).pretty();
+```
+
+- **Explanation**: This query will display the `User_Id` and `Friends_List` for users who have more than 5 friends.
+
+#### 5. Display All Users with `No_of_Posts` in Descending Order
+We will use the `sort()` method to sort the users by `No_of_Posts` in descending order.
+
+```javascript
+db.Social_Media.find().sort({ No_of_Posts: -1 }).pretty();
+```
+
+- **Explanation**: The `sort({ No_of_Posts: -1 })` sorts the users by `No_of_Posts` in descending order. The `-1` indicates descending order.
+
+---
+
+### Summary of Queries
+
+1. **List all users in a formatted manner**: `find().pretty()`.
+2. **Find users with more than 100 posts**: `find({ No_of_Posts: { $gt: 100 } })`.
+3. **List user names and their friends list**: `find({}, { User_Name: 1, Friends_List: 1, _id: 0 })`.
+4. **Display user ids and friends list for users with more than 5 friends**: `find({ No_of_Friends: { $gt: 5 } }, { User_Id: 1, Friends_List: 1, _id: 0 })`.
+5. **Display all users with posts in descending order**: `find().sort({ No_of_Posts: -1 })`.
+
+---
+
+### Running the Queries
+
+1. **Open MongoDB Shell** (`mongosh`).
+2. **Switch to the desired database**: 
+   ```javascript
+   use social_media_db
+   ```
+3. **Execute the queries**: Run each of the queries listed above.
+
+By following these steps, you will be able to manage your `Social_Media` collection and extract the required data efficiently using MongoDB.
